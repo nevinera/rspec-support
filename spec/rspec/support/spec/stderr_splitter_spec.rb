@@ -106,7 +106,6 @@ RSpec.describe 'RSpec::Support::StdErrSplitter' do
     expect(File === $stderr.to_io).to be_falsey
 
     tempfile = Tempfile.new("foo")
-
     begin
       $stderr.reopen(tempfile)
       expect(File === $stderr.to_io).to be_truthy
