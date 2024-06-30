@@ -103,17 +103,20 @@ RSpec.describe 'RSpec::Support::StdErrSplitter' do
   # to do in CaptureStreamToTempfile.
   it 'is able to restore the stream from a cloned StdErrSplitter' do
     cloned = $stderr.clone
-    expect($stderr.to_io).not_to be_a(File)
+    expect(File === $stderr.to_io).to be_falsey
 
     tempfile = Tempfile.new("foo")
+
     begin
       $stderr.reopen(tempfile)
-      expect($stderr.to_io).to be_a(File)
+      expect(File === $stderr.to_io).to be_truthy
+      @checked = true
     ensure
       $stderr.reopen(cloned)
       tempfile.close
       tempfile.unlink
     end
-    expect($stderr.to_io).not_to be_a(File)
+    expect(File === $stderr.to_io).to be_falsey
+    expect(@checked).to be_truthy
   end
 end
